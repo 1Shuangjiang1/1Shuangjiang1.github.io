@@ -7,7 +7,77 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>霜降-Shuang.Jiang</copyright>
-        <lastBuildDate>Wed, 09 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://1Shuangjiang1.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 24 Jun 2025 02:39:10 +0800</lastBuildDate><atom:link href="https://1Shuangjiang1.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>基于LlamaIndex的劳动法RAG问答系统</title>
+        <link>https://1Shuangjiang1.github.io/p/%E5%9F%BA%E4%BA%8Ellamaindex%E7%9A%84%E5%8A%B3%E5%8A%A8%E6%B3%95rag%E9%97%AE%E7%AD%94%E7%B3%BB%E7%BB%9F/</link>
+        <pubDate>Tue, 24 Jun 2025 02:39:10 +0800</pubDate>
+        
+        <guid>https://1Shuangjiang1.github.io/p/%E5%9F%BA%E4%BA%8Ellamaindex%E7%9A%84%E5%8A%B3%E5%8A%A8%E6%B3%95rag%E9%97%AE%E7%AD%94%E7%B3%BB%E7%BB%9F/</guid>
+        <description>&lt;h1 id=&#34;项目的选题背景&#34;&gt;项目的选题背景
+&lt;/h1&gt;&lt;p&gt;最近在学习大模型（LLM）的基础知识时，我对RAG（Retrieval-Augmented Generation）这种技术很感兴趣。打算着手实现一个RAG应用，加深自己对RAG各个步骤的理解和实践能力。&lt;/p&gt;
+&lt;h2 id=&#34;为什么对rag感兴趣&#34;&gt;为什么对RAG感兴趣？
+&lt;/h2&gt;&lt;p&gt;在我看来，RAG是很有技术前景的，能够根据知识库的查询结果进行回答这一特点，像是让大模型在“开卷考试”，很大程度避免模型出现“幻觉”现象。大模型的回答变得更为有理有据，专业性也得到明显增强。&lt;/p&gt;
+&lt;p&gt;尤其对于企业来说，企业内部专业数据的量往往很大，并且经常需要更新，RAG和微调比起来更加方便。无需常常重新微调，只需更新数据库即可。因此，比起微调，只需要一个理解能力出色的基础大模型，再加上RAG技术的加持，我们就能轻松获得一个专业的垂直领域大模型。&lt;/p&gt;
+&lt;h2 id=&#34;为什么选择实现劳动法领域的rag&#34;&gt;为什么选择实现劳动法领域的RAG？
+&lt;/h2&gt;&lt;p&gt;为何是劳动法大模型呢，大概是对于即将进入社会，开始正式工作的大学生，这一领域的大模型可谓是刚需。我深感大量初入职场的学生对于法律知识的匮乏。毕业季，找工作成为同学们讨论的热点，但签合同、试用期、工资拖欠、加班补偿……这些与我们切身利益息息相关的问题却总是被忽视或误解。于是，我认为实现一个劳动法相关的RAG问答系统，不仅有意义，还相当实用。&lt;/p&gt;
+&lt;h1 id=&#34;项目目标与整体架构&#34;&gt;项目目标与整体架构
+&lt;/h1&gt;&lt;p&gt;明确目标和项目的整体架构是开始新项目时必备的第一步，这样能确保你在做每个模块的时候都有清晰的思路。那么本项目的核心目标就是：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;构建一个能回答劳动法相关问题的RAG法律AI助手，具备专业性和可追溯性。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;RAG应用整体架构如下图所示：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;graph LR 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;A[用户提问] --&amp;gt; B[问题解析/预处理]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;B --&amp;gt; C[向量检索]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;C --&amp;gt; D[获得相关文档片段]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;D --&amp;gt; E[LLM生成回答]
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;而构建流程可以如下图所示：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;graph LR 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    A[数据收集] --&amp;gt; B[数据预处理]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    B --&amp;gt; C[生成数据嵌入]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    C --&amp;gt; D[构建向量存储]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    D --&amp;gt; E[创建查询引擎]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    E --&amp;gt; F[集成LLM]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    F --&amp;gt; G[响应生成与优化]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    G --&amp;gt; H[测试与调优]
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;经过对RAG的理论部分的学习，在这些步骤中，我认为以下三个部分对最终的效果有很大影响：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;文本分块&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;生成文本的嵌入（Embedding）&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;查询策略&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Embedding将文本转化为向量表示，使得检索系统能够通过相似度找到相关文档，进而提升生成模型的输出质量，Embedding的质量直接影响检索的准确性；数据文本的分块策略规定如何将长文本拆分成更小的单元，这需要根据数据的具体内容决定，能够影响检索系统在处理大规模数据时的高效性和准确性；合理的查询策略则决定了如何有效地从数据库中提取相关信息，优化检索过程。所以在整篇博客中，我会着重讨论这几个部分。&lt;/p&gt;
+&lt;h2 id=&#34;技术栈介绍&#34;&gt;技术栈介绍
+&lt;/h2&gt;&lt;p&gt;查询一些资料后，我发现RAG应用已经有了一些集成度比较高的框架，能非常方便，本项目主要基于LlamaIndex框架构建，这是一款非常方便的RAG框架，集成了知识库构建、索引管理与LLM交互，适合快速实现RAG应用。&lt;a class=&#34;link&#34; href=&#34;https://docs.llamaindex.ai/en/stable/examples/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Examples - LlamaIndex&lt;/a&gt;
+而关于向量数据库，我使用Chroma，这是个轻量、便捷的向量数据库，配合LlamaIndex可以高效实现向量数据的存储与查询。&lt;/p&gt;
+&lt;p&gt;接下来，我将逐步讲述本项目的实施细节，包括数据处理、知识库构建、模型调用、检索优化与结果分析等内容。&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>Chinese Test</title>
         <link>https://1Shuangjiang1.github.io/p/test-chinese/</link>
         <pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate>
@@ -102,77 +172,6 @@
         
         <guid>https://1Shuangjiang1.github.io/archives/</guid>
         <description></description>
-        </item>
-        <item>
-        <title></title>
-        <link>https://1Shuangjiang1.github.io/p/</link>
-        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-        
-        <guid>https://1Shuangjiang1.github.io/p/</guid>
-        <description>&lt;h1 id=&#34;基于llamaindex的劳动法rag问答系统&#34;&gt;基于LlamaIndex的劳动法RAG问答系统
-&lt;/h1&gt;&lt;h1 id=&#34;项目的选题背景&#34;&gt;项目的选题背景
-&lt;/h1&gt;&lt;p&gt;最近在学习大模型（LLM）的基础知识时，我对RAG（Retrieval-Augmented Generation）这种技术很感兴趣。打算着手实现一个RAG应用，加深自己对RAG各个步骤的理解和实践能力。&lt;/p&gt;
-&lt;h2 id=&#34;为什么对rag感兴趣&#34;&gt;为什么对RAG感兴趣？
-&lt;/h2&gt;&lt;p&gt;在我看来，RAG是很有技术前景的，能够根据知识库的查询结果进行回答这一特点，像是让大模型在“开卷考试”，很大程度避免模型出现“幻觉”现象。大模型的回答变得更为有理有据，专业性也得到明显增强。&lt;/p&gt;
-&lt;p&gt;尤其对于企业来说，企业内部专业数据的量往往很大，并且经常需要更新，RAG和微调比起来更加方便。无需常常重新微调，只需更新数据库即可。因此，比起微调，只需要一个理解能力出色的基础大模型，再加上RAG技术的加持，我们就能轻松获得一个专业的垂直领域大模型。&lt;/p&gt;
-&lt;h2 id=&#34;为什么选择实现劳动法领域的rag&#34;&gt;为什么选择实现劳动法领域的RAG？
-&lt;/h2&gt;&lt;p&gt;为何是劳动法大模型呢，大概是对于即将进入社会，开始正式工作的大学生，这一领域的大模型可谓是刚需。我深感大量初入职场的学生对于法律知识的匮乏。毕业季，找工作成为同学们讨论的热点，但签合同、试用期、工资拖欠、加班补偿……这些与我们切身利益息息相关的问题却总是被忽视或误解。于是，我认为实现一个劳动法相关的RAG问答系统，不仅有意义，还相当实用。&lt;/p&gt;
-&lt;h1 id=&#34;项目目标与整体架构&#34;&gt;项目目标与整体架构
-&lt;/h1&gt;&lt;p&gt;明确目标和项目的整体架构是开始新项目时必备的第一步，这样能确保你在做每个模块的时候都有清晰的思路。那么本项目的核心目标就是：&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;构建一个能回答劳动法相关问题的RAG法律AI助手，具备专业性和可追溯性。&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;RAG应用整体架构如下图所示：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;graph LR 
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;A[用户提问] --&amp;gt; B[问题解析/预处理]
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;B --&amp;gt; C[向量检索]
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;C --&amp;gt; D[获得相关文档片段]
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;D --&amp;gt; E[LLM生成回答]
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;而构建流程可以如下图所示：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;graph LR 
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    A[数据收集] --&amp;gt; B[数据预处理]
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    B --&amp;gt; C[生成数据嵌入]
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    C --&amp;gt; D[构建向量存储]
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    D --&amp;gt; E[创建查询引擎]
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    E --&amp;gt; F[集成LLM]
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    F --&amp;gt; G[响应生成与优化]
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    G --&amp;gt; H[测试与调优]
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;经过对RAG的理论部分的学习，在这些步骤中，我认为以下三个部分对最终的效果有很大影响：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;文本分块&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;生成文本的嵌入（Embedding）&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;查询策略&lt;/strong&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;Embedding将文本转化为向量表示，使得检索系统能够通过相似度找到相关文档，进而提升生成模型的输出质量，Embedding的质量直接影响检索的准确性；数据文本的分块策略规定如何将长文本拆分成更小的单元，这需要根据数据的具体内容决定，能够影响检索系统在处理大规模数据时的高效性和准确性；合理的查询策略则决定了如何有效地从数据库中提取相关信息，优化检索过程。所以在整篇博客中，我会着重讨论这几个部分。&lt;/p&gt;
-&lt;h2 id=&#34;技术栈介绍&#34;&gt;技术栈介绍
-&lt;/h2&gt;&lt;p&gt;查询一些资料后，我发现RAG应用已经有了一些集成度比较高的框架，能非常方便，本项目主要基于LlamaIndex框架构建，这是一款非常方便的RAG框架，集成了知识库构建、索引管理与LLM交互，适合快速实现RAG应用。&lt;a class=&#34;link&#34; href=&#34;https://docs.llamaindex.ai/en/stable/examples/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Examples - LlamaIndex&lt;/a&gt;
-而关于向量数据库，我使用Chroma，这是个轻量、便捷的向量数据库，配合LlamaIndex可以高效实现向量数据的存储与查询。&lt;/p&gt;
-&lt;p&gt;接下来，我将逐步讲述本项目的实施细节，包括数据处理、知识库构建、模型调用、检索优化与结果分析等内容。&lt;/p&gt;
-</description>
         </item>
         <item>
         <title>关于</title>
