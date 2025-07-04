@@ -7,162 +7,286 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>霜降-Shuang.Jiang</copyright>
-        <lastBuildDate>Tue, 24 Jun 2025 02:39:10 +0800</lastBuildDate><atom:link href="https://1Shuangjiang1.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 09 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://1Shuangjiang1.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>基于LlamaIndex的劳动法RAG问答系统</title>
         <link>https://1Shuangjiang1.github.io/p/%E5%9F%BA%E4%BA%8Ellamaindex%E7%9A%84%E5%8A%B3%E5%8A%A8%E6%B3%95rag%E9%97%AE%E7%AD%94%E7%B3%BB%E7%BB%9F/</link>
-        <pubDate>Tue, 24 Jun 2025 02:39:10 +0800</pubDate>
+        <pubDate>Wed, 09 Apr 2025 00:00:00 +0000</pubDate>
         
         <guid>https://1Shuangjiang1.github.io/p/%E5%9F%BA%E4%BA%8Ellamaindex%E7%9A%84%E5%8A%B3%E5%8A%A8%E6%B3%95rag%E9%97%AE%E7%AD%94%E7%B3%BB%E7%BB%9F/</guid>
-        <description>&lt;h1 id=&#34;项目的选题背景&#34;&gt;项目的选题背景
-&lt;/h1&gt;&lt;p&gt;最近在学习大模型（LLM）的基础知识时，我对RAG（Retrieval-Augmented Generation）这种技术很感兴趣。打算着手实现一个RAG应用，加深自己对RAG各个步骤的理解和实践能力。&lt;/p&gt;
-&lt;h2 id=&#34;为什么对rag感兴趣&#34;&gt;为什么对RAG感兴趣？
-&lt;/h2&gt;&lt;p&gt;在我看来，RAG是很有技术前景的，能够根据知识库的查询结果进行回答这一特点，像是让大模型在“开卷考试”，很大程度避免模型出现“幻觉”现象。大模型的回答变得更为有理有据，专业性也得到明显增强。&lt;/p&gt;
+        <description>&lt;img src="https://1Shuangjiang1.github.io/p/%E5%9F%BA%E4%BA%8Ellamaindex%E7%9A%84%E5%8A%B3%E5%8A%A8%E6%B3%95rag%E9%97%AE%E7%AD%94%E7%B3%BB%E7%BB%9F/7.png" alt="Featured image of post 基于LlamaIndex的劳动法RAG问答系统" /&gt;&lt;h1 id=&#34;基于llamaindex的劳动法rag问答系统&#34;&gt;基于LlamaIndex的劳动法RAG问答系统
+&lt;/h1&gt;&lt;h2 id=&#34;项目的选题背景&#34;&gt;项目的选题背景
+&lt;/h2&gt;&lt;p&gt;最近在学习大模型（LLM）的基础知识时，我对RAG（Retrieval-Augmented Generation）这种技术很感兴趣。打算着手实现一个RAG应用，加深自己对RAG各个步骤的理解和实践能力。&lt;/p&gt;
+&lt;h3 id=&#34;为什么对rag感兴趣&#34;&gt;为什么对RAG感兴趣？
+&lt;/h3&gt;&lt;p&gt;在我看来，RAG是很有技术前景的，能够根据知识库的查询结果进行回答这一特点，像是让大模型在“开卷考试”，很大程度避免模型出现“幻觉”现象。大模型的回答变得更为有理有据，专业性也得到明显增强。&lt;/p&gt;
 &lt;p&gt;尤其对于企业来说，企业内部专业数据的量往往很大，并且经常需要更新，RAG和微调比起来更加方便。无需常常重新微调，只需更新数据库即可。因此，比起微调，只需要一个理解能力出色的基础大模型，再加上RAG技术的加持，我们就能轻松获得一个专业的垂直领域大模型。&lt;/p&gt;
-&lt;h2 id=&#34;为什么选择实现劳动法领域的rag&#34;&gt;为什么选择实现劳动法领域的RAG？
-&lt;/h2&gt;&lt;p&gt;为何是劳动法大模型呢，大概是对于即将进入社会，开始正式工作的大学生，这一领域的大模型可谓是刚需。我深感大量初入职场的学生对于法律知识的匮乏。毕业季，找工作成为同学们讨论的热点，但签合同、试用期、工资拖欠、加班补偿……这些与我们切身利益息息相关的问题却总是被忽视或误解。于是，我认为实现一个劳动法相关的RAG问答系统，不仅有意义，还相当实用。&lt;/p&gt;
-&lt;h1 id=&#34;项目目标与整体架构&#34;&gt;项目目标与整体架构
-&lt;/h1&gt;&lt;p&gt;明确目标和项目的整体架构是开始新项目时必备的第一步，这样能确保你在做每个模块的时候都有清晰的思路。那么本项目的核心目标就是：&lt;/p&gt;
+&lt;h3 id=&#34;为什么选择实现劳动法领域的rag&#34;&gt;为什么选择实现劳动法领域的RAG？
+&lt;/h3&gt;&lt;p&gt;为何是劳动法大模型呢，大概是对于即将进入社会，开始正式工作的大学生，这一领域的大模型可谓是刚需。我深感大量初入职场的学生对于法律知识的匮乏。毕业季，找工作成为同学们讨论的热点，但签合同、试用期、工资拖欠、加班补偿……这些与我们切身利益息息相关的问题却总是被忽视或误解。于是，我认为实现一个劳动法相关的RAG问答系统，不仅有意义，还相当实用。&lt;/p&gt;
+&lt;h2 id=&#34;项目目标与整体架构&#34;&gt;项目目标与整体架构
+&lt;/h2&gt;&lt;p&gt;明确目标和项目的整体架构是开始新项目时必备的第一步，这样能确保你在做每个模块的时候都有清晰的思路。那么本项目的核心目标就是：&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;构建一个能回答劳动法相关问题的RAG法律AI助手，具备专业性和可追溯性。&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;RAG应用整体架构如下图所示：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;graph LR 
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;A[用户提问] --&amp;gt; B[问题解析/预处理]
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;B --&amp;gt; C[向量检索]
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;C --&amp;gt; D[获得相关文档片段]
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;D --&amp;gt; E[LLM生成回答]
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;而构建流程可以如下图所示：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;graph LR 
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    A[数据收集] --&amp;gt; B[数据预处理]
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    B --&amp;gt; C[生成数据嵌入]
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    C --&amp;gt; D[构建向量存储]
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    D --&amp;gt; E[创建查询引擎]
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    E --&amp;gt; F[集成LLM]
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    F --&amp;gt; G[响应生成与优化]
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    G --&amp;gt; H[测试与调优]
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;经过对RAG的理论部分的学习，在这些步骤中，我认为以下三个部分对最终的效果有很大影响：&lt;/p&gt;
+&lt;p&gt;RAG应用整体架构如下图所示：
+&lt;img src=&#34;https://1Shuangjiang1.github.io/p/%E5%9F%BA%E4%BA%8Ellamaindex%E7%9A%84%E5%8A%B3%E5%8A%A8%E6%B3%95rag%E9%97%AE%E7%AD%94%E7%B3%BB%E7%BB%9F/2.png&#34;
+	width=&#34;982&#34;
+	height=&#34;86&#34;
+	srcset=&#34;https://1Shuangjiang1.github.io/p/%E5%9F%BA%E4%BA%8Ellamaindex%E7%9A%84%E5%8A%B3%E5%8A%A8%E6%B3%95rag%E9%97%AE%E7%AD%94%E7%B3%BB%E7%BB%9F/2_hu_35dcdd31800ed540.png 480w, https://1Shuangjiang1.github.io/p/%E5%9F%BA%E4%BA%8Ellamaindex%E7%9A%84%E5%8A%B3%E5%8A%A8%E6%B3%95rag%E9%97%AE%E7%AD%94%E7%B3%BB%E7%BB%9F/2_hu_f7545118f945a8f8.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;知识库向量化&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;1141&#34;
+		data-flex-basis=&#34;2740px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;而构建流程可以如下图所示：
+&lt;img src=&#34;https://1Shuangjiang1.github.io/p/%E5%9F%BA%E4%BA%8Ellamaindex%E7%9A%84%E5%8A%B3%E5%8A%A8%E6%B3%95rag%E9%97%AE%E7%AD%94%E7%B3%BB%E7%BB%9F/3.png&#34;
+	width=&#34;1022&#34;
+	height=&#34;63&#34;
+	srcset=&#34;https://1Shuangjiang1.github.io/p/%E5%9F%BA%E4%BA%8Ellamaindex%E7%9A%84%E5%8A%B3%E5%8A%A8%E6%B3%95rag%E9%97%AE%E7%AD%94%E7%B3%BB%E7%BB%9F/3_hu_c2282d67cfe3d9d9.png 480w, https://1Shuangjiang1.github.io/p/%E5%9F%BA%E4%BA%8Ellamaindex%E7%9A%84%E5%8A%B3%E5%8A%A8%E6%B3%95rag%E9%97%AE%E7%AD%94%E7%B3%BB%E7%BB%9F/3_hu_775e04c83494c4a1.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;知识库向量化&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;1622&#34;
+		data-flex-basis=&#34;3893px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;经过对RAG的理论部分的学习，在这些步骤中，我认为以下三个部分对最终的效果有很大影响：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;文本分块&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;生成文本的嵌入（Embedding）&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;查询策略&lt;/strong&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;Embedding将文本转化为向量表示，使得检索系统能够通过相似度找到相关文档，进而提升生成模型的输出质量，Embedding的质量直接影响检索的准确性；数据文本的分块策略规定如何将长文本拆分成更小的单元，这需要根据数据的具体内容决定，能够影响检索系统在处理大规模数据时的高效性和准确性；合理的查询策略则决定了如何有效地从数据库中提取相关信息，优化检索过程。所以在整篇博客中，我会着重讨论这几个部分。&lt;/p&gt;
-&lt;h2 id=&#34;技术栈介绍&#34;&gt;技术栈介绍
-&lt;/h2&gt;&lt;p&gt;查询一些资料后，我发现RAG应用已经有了一些集成度比较高的框架，能非常方便，本项目主要基于LlamaIndex框架构建，这是一款非常方便的RAG框架，集成了知识库构建、索引管理与LLM交互，适合快速实现RAG应用。&lt;a class=&#34;link&#34; href=&#34;https://docs.llamaindex.ai/en/stable/examples/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;h3 id=&#34;技术栈介绍&#34;&gt;技术栈介绍
+&lt;/h3&gt;&lt;p&gt;查询一些资料后，我发现RAG应用已经有了一些集成度比较高的框架，能非常方便，本项目主要基于&lt;strong&gt;LlamaIndex框架&lt;/strong&gt;构建，这是一款非常方便的RAG框架，集成了知识库构建、索引管理与LLM交互，适合快速实现RAG应用。&lt;a class=&#34;link&#34; href=&#34;https://docs.llamaindex.ai/en/stable/examples/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Examples - LlamaIndex&lt;/a&gt;
-而关于向量数据库，我使用Chroma，这是个轻量、便捷的向量数据库，配合LlamaIndex可以高效实现向量数据的存储与查询。&lt;/p&gt;
+而关于向量数据库，我使用&lt;strong&gt;Chroma&lt;/strong&gt;，这是个轻量、便捷的向量数据库，配合LlamaIndex可以高效实现向量数据的存储与查询。&lt;/p&gt;
 &lt;p&gt;接下来，我将逐步讲述本项目的实施细节，包括数据处理、知识库构建、模型调用、检索优化与结果分析等内容。&lt;/p&gt;
-</description>
-        </item>
-        <item>
-        <title>Chinese Test</title>
-        <link>https://1Shuangjiang1.github.io/p/test-chinese/</link>
-        <pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate>
-        
-        <guid>https://1Shuangjiang1.github.io/p/test-chinese/</guid>
-        <description>&lt;img src="https://1Shuangjiang1.github.io/p/test-chinese/helena-hertz-wWZzXlDpMog-unsplash.jpg" alt="Featured image of post Chinese Test" /&gt;&lt;h2 id=&#34;正文测试&#34;&gt;正文测试
-&lt;/h2&gt;&lt;p&gt;而这些并不是完全重要，更加重要的问题是， 带着这些问题，我们来审视一下学生会退会。 既然如何， 对我个人而言，学生会退会不仅仅是一个重大的事件，还可能会改变我的人生。 我们不得不面对一个非常尴尬的事实，那就是， 可是，即使是这样，学生会退会的出现仍然代表了一定的意义。 学生会退会，发生了会如何，不发生又会如何。 经过上述讨论， 生活中，若学生会退会出现了，我们就不得不考虑它出现了的事实。 学生会退会，到底应该如何实现。 这样看来， 在这种困难的抉择下，本人思来想去，寝食难安。 对我个人而言，学生会退会不仅仅是一个重大的事件，还可能会改变我的人生。 就我个人来说，学生会退会对我的意义，不能不说非常重大。 莎士比亚曾经提到过，人的一生是短的，但如果卑劣地过这一生，就太长了。这似乎解答了我的疑惑。 莫扎特说过一句富有哲理的话，谁和我一样用功，谁就会和我一样成功。这启发了我， 对我个人而言，学生会退会不仅仅是一个重大的事件，还可能会改变我的人生。 学生会退会，到底应该如何实现。 一般来说， 从这个角度来看， 这种事实对本人来说意义重大，相信对这个世界也是有一定意义的。 在这种困难的抉择下，本人思来想去，寝食难安。 了解清楚学生会退会到底是一种怎么样的存在，是解决一切问题的关键。 一般来说， 生活中，若学生会退会出现了，我们就不得不考虑它出现了的事实。 问题的关键究竟为何？ 而这些并不是完全重要，更加重要的问题是。&lt;/p&gt;
-&lt;p&gt;奥斯特洛夫斯基曾经说过，共同的事业，共同的斗争，可以使人们产生忍受一切的力量。　带着这句话，我们还要更加慎重的审视这个问题： 一般来讲，我们都必须务必慎重的考虑考虑。 既然如此， 这种事实对本人来说意义重大，相信对这个世界也是有一定意义的。 带着这些问题，我们来审视一下学生会退会。 我认为， 我认为， 在这种困难的抉择下，本人思来想去，寝食难安。 问题的关键究竟为何？ 每个人都不得不面对这些问题。 在面对这种问题时， 要想清楚，学生会退会，到底是一种怎么样的存在。 我认为， 既然如此， 每个人都不得不面对这些问题。 在面对这种问题时， 那么， 我认为， 学生会退会因何而发生。&lt;/p&gt;
-&lt;h2 id=&#34;引用&#34;&gt;引用
-&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;思念是最暖的忧伤像一双翅膀&lt;br&gt;
-让我停不了飞不远在过往游荡&lt;br&gt;
-不告而别的你 就算为了我着想&lt;br&gt;
-这么沉痛的呵护 我怎么能翱翔&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.youtube.com/watch?v=3aypp_YlBzI&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;最暖的憂傷 - 田馥甄&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;&lt;/blockquote&gt;
-&lt;h2 id=&#34;图片&#34;&gt;图片
-&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://1Shuangjiang1.github.io/p/test-chinese/florian-klauer-nptLmg6jqDo-unsplash.jpg&#34;
-	width=&#34;667&#34;
-	height=&#34;1000&#34;
-	srcset=&#34;https://1Shuangjiang1.github.io/p/test-chinese/florian-klauer-nptLmg6jqDo-unsplash_hu_e98fca2b4272416e.jpg 480w, https://1Shuangjiang1.github.io/p/test-chinese/florian-klauer-nptLmg6jqDo-unsplash_hu_e3d37c9ded115b12.jpg 1024w&#34;
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;Photo by Florian Klauer on Unsplash&#34;
-	
-	
-		class=&#34;gallery-image&#34; 
-		data-flex-grow=&#34;66&#34;
-		data-flex-basis=&#34;160px&#34;
-	
-&gt;  &lt;img src=&#34;https://1Shuangjiang1.github.io/p/test-chinese/luca-bravo-alS7ewQ41M8-unsplash.jpg&#34;
-	width=&#34;1000&#34;
-	height=&#34;667&#34;
-	srcset=&#34;https://1Shuangjiang1.github.io/p/test-chinese/luca-bravo-alS7ewQ41M8-unsplash_hu_e13c58d5189f892c.jpg 480w, https://1Shuangjiang1.github.io/p/test-chinese/luca-bravo-alS7ewQ41M8-unsplash_hu_8fc948b7ee525251.jpg 1024w&#34;
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;Photo by Luca Bravo on Unsplash&#34;
-	
-	
-		class=&#34;gallery-image&#34; 
-		data-flex-grow=&#34;149&#34;
-		data-flex-basis=&#34;359px&#34;
-	
-&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://1Shuangjiang1.github.io/p/test-chinese/helena-hertz-wWZzXlDpMog-unsplash.jpg&#34;
-	width=&#34;1000&#34;
-	height=&#34;750&#34;
-	srcset=&#34;https://1Shuangjiang1.github.io/p/test-chinese/helena-hertz-wWZzXlDpMog-unsplash_hu_503c0ebcc5245e10.jpg 480w, https://1Shuangjiang1.github.io/p/test-chinese/helena-hertz-wWZzXlDpMog-unsplash_hu_48c98de55fb3c999.jpg 1024w&#34;
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;Photo by Helena Hertz on Unsplash&#34;
-	
-	
-		class=&#34;gallery-image&#34; 
-		data-flex-grow=&#34;133&#34;
-		data-flex-basis=&#34;320px&#34;
-	
-&gt;  &lt;img src=&#34;https://1Shuangjiang1.github.io/p/test-chinese/hudai-gayiran-3Od_VKcDEAA-unsplash.jpg&#34;
-	width=&#34;667&#34;
-	height=&#34;1000&#34;
-	srcset=&#34;https://1Shuangjiang1.github.io/p/test-chinese/hudai-gayiran-3Od_VKcDEAA-unsplash_hu_f81a3588c5c4a663.jpg 480w, https://1Shuangjiang1.github.io/p/test-chinese/hudai-gayiran-3Od_VKcDEAA-unsplash_hu_1c52ba2a4ad7b9a0.jpg 1024w&#34;
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;Photo by Hudai Gayiran on Unsplash&#34;
-	
-	
-		class=&#34;gallery-image&#34; 
-		data-flex-grow=&#34;66&#34;
-		data-flex-basis=&#34;160px&#34;
-	
-&gt;&lt;/p&gt;
+&lt;h2 id=&#34;向量数据库的构建&#34;&gt;向量数据库的构建
+&lt;/h2&gt;&lt;h3 id=&#34;数据获取&#34;&gt;数据获取
+&lt;/h3&gt;&lt;p&gt;首先，我们得确定知识库的内容。对于构建劳动法RAG，我们需要《中华人民共和国劳动法》以及《劳动合同法》。这些法律文本是我们知识库的核心内容。&lt;/p&gt;
+&lt;p&gt;在这一步，我从两个政府官方网站上爬取了相关的法律文本。网址如下：
+&lt;a class=&#34;link&#34; href=&#34;https://www.mohrss.gov.cn/xxgk2020/fdzdgknr/zcfg/fl/202011/t20201102_394625.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;中华人民共和国劳动法_中华人民共和国人力资源和社会保障部 (mohrss.gov.cn)&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://www.gqb.gov.cn/news/2019/0604/46257.shtml&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;中华人民共和国劳动合同法 (gqb.gov.cn)&lt;/a&gt;
+由于法律条文的格式通常比较固定，采用简单的爬虫就能轻松抓取。
+这里我用了一个正则表达式对这些文本进行处理：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-markdown&#34; data-lang=&#34;markdown&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;![&lt;span class=&#34;nt&#34;&gt;Photo by Florian Klauer on Unsplash&lt;/span&gt;](&lt;span class=&#34;na&#34;&gt;florian-klauer-nptLmg6jqDo-unsplash.jpg&lt;/span&gt;)  ![&lt;span class=&#34;nt&#34;&gt;Photo by Luca Bravo on Unsplash&lt;/span&gt;](&lt;span class=&#34;na&#34;&gt;luca-bravo-alS7ewQ41M8-unsplash.jpg&lt;/span&gt;) 
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;![&lt;span class=&#34;nt&#34;&gt;Photo by Helena Hertz on Unsplash&lt;/span&gt;](&lt;span class=&#34;na&#34;&gt;helena-hertz-wWZzXlDpMog-unsplash.jpg&lt;/span&gt;)  ![&lt;span class=&#34;nt&#34;&gt;Photo by Hudai Gayiran on Unsplash&lt;/span&gt;](&lt;span class=&#34;na&#34;&gt;hudai-gayiran-3Od_VKcDEAA-unsplash.jpg&lt;/span&gt;)
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;pattern&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;re&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;compile&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;sa&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;第([一二三四五六七八九十零百]+)条.*?(?=\n第|$)&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;re&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;DOTALL&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;相册语法来自 &lt;a class=&#34;link&#34; href=&#34;https://typlog.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Typlog&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;将每一条法律条文提取出来，并以键值对的形式进行存储。例如，“中华人民共和国劳动法 第x条”: xxx。这个格式极其简洁，且便于后续的处理。最终，我将整理好的数据保存为JSON格式，方便后续加载。&lt;/p&gt;
+&lt;p&gt;在收集数据的过程中，我们还要特别注意&lt;strong&gt;法律文本的准确性&lt;/strong&gt;，爬取时需要确保数据来源的权威性，毕竟涉及到的都是法律法规，一旦出错，可能会对用户造成很大的误导。包括一切类似的RAG应用，数据库的内容准确性和权威性都是非常重要的。&lt;/p&gt;
+&lt;p&gt;也要注意&lt;strong&gt;数据格式化&lt;/strong&gt;，法律文件还算容易处理，因为都是比较规整的法律条目。很多其他类型的，从不同网址爬取的数据，其格式都不同。格式化可以去除无关内容、统一数据结构并提取有效信息，从而提高数据的检索效率、向量化质量和生成结果的准确性。当然具体怎么处理还需根据数据本身而定。&lt;/p&gt;
+&lt;h3 id=&#34;知识库向量化&#34;&gt;知识库向量化
+&lt;/h3&gt;&lt;p&gt;RAG模型的核心原理是通过对外部知识库的查询来增强生成模型的回答能力。那么，模型如何查询这些法律条文的知识呢？答案就是：将数据文本向量化。向量化就是将文本中的语义信息映射到一个高维空间中的向量，使得计算机能够理解文本的语义，并进行相似度查询，寻找与用户提问相似度较高的文本，作为生成答案的参考资料，当然这里面的相似度查询会在后文中展开介绍。&lt;/p&gt;
+&lt;p&gt;在RAG系统中，我们不可能每次启动应用时都重新进行向量化操作，因此需要将向量化后的数据进行本地存储。在存储之前，我们需要对知识库进行上文描述的向量化处理。这一步是通过&lt;strong&gt;embedding模型&lt;/strong&gt;实现的&lt;/p&gt;
+&lt;p&gt;完整如下图所示：
+&lt;img src=&#34;https://1Shuangjiang1.github.io/p/%E5%9F%BA%E4%BA%8Ellamaindex%E7%9A%84%E5%8A%B3%E5%8A%A8%E6%B3%95rag%E9%97%AE%E7%AD%94%E7%B3%BB%E7%BB%9F/1.png&#34;
+	width=&#34;1132&#34;
+	height=&#34;497&#34;
+	srcset=&#34;https://1Shuangjiang1.github.io/p/%E5%9F%BA%E4%BA%8Ellamaindex%E7%9A%84%E5%8A%B3%E5%8A%A8%E6%B3%95rag%E9%97%AE%E7%AD%94%E7%B3%BB%E7%BB%9F/1_hu_868ea94b886d009.png 480w, https://1Shuangjiang1.github.io/p/%E5%9F%BA%E4%BA%8Ellamaindex%E7%9A%84%E5%8A%B3%E5%8A%A8%E6%B3%95rag%E9%97%AE%E7%AD%94%E7%B3%BB%E7%BB%9F/1_hu_8f54f3875ec82a1b.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;知识库向量化&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;227&#34;
+		data-flex-basis=&#34;546px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;知识库向量化主要分为两个步骤，&lt;strong&gt;文本分块（chunk）&lt;strong&gt;和&lt;/strong&gt;embedding&lt;/strong&gt;。这两步都对模型检索效果和生成的准确性有很大影响，我后面会写一篇博客专门介绍我对这两个部分的理解和一些技术细节的讨论。在这篇博客中先不展开，仅介绍实现的流程。&lt;/p&gt;
+&lt;h3 id=&#34;文本分块&#34;&gt;文本分块
+&lt;/h3&gt;&lt;p&gt;文本分块的本质是将文本划分为一个个逻辑独立的单元，这些单元是后续查询和检索操作的基础。每个分块代表了可以被模型独立处理和查询的语义单元。通过合理的分块，系统能够高效地从知识库中提取相关信息，从而为生成任务提供精确的支持。&lt;/p&gt;
+&lt;p&gt;常见的分块方法包括按句子、段落、固定字符数和语义划分进行分块。&lt;/p&gt;
+&lt;p&gt;而对于本任务的法律文本，我认为按每一条法律条文进行分块是最佳选择。每条法律条文通常是独立的法律单元，按条文分块能有效保留每个条文的语义完整，减少信息丢失，并提高检索精度。&lt;/p&gt;
+&lt;p&gt;在本项目中我使用 &lt;strong&gt;Chroma&lt;/strong&gt; 数据库，目前有很多可用的开源向量数据库，大家可以根据自己的需求进行选择，Chroma是一个轻量级的向量数据库，设计简单易用，适合快速原型开发，并且与Hugging Face的Transformers库兼容，易于与大型预训练模型进行集成。想做一个demo尝试一下的朋友都可以用在这个库。&lt;/p&gt;
+&lt;p&gt;Chroma数据库将每个数据项存储为一个“node”。查询时，我们就可以通过对比“node”之间的相似度来找到最相关的文本，而就可以将每一条法律条文单独作为一个“node”存储。存入Chroma数据库后，我使用&lt;strong&gt;LlamaIndex&lt;/strong&gt;为这些“node”构建了索引。具体的参考代码我会放在GitHub中。&lt;/p&gt;
+&lt;p&gt;其中每个node的构建如下所示，每个node里面除了文本内容和ID，还有一些&lt;strong&gt;metadata&lt;/strong&gt;，包括法律名字，标题等等。这些元数据为每个节点提供了额外的结构化信息，有助于提高检索精度、查询效率和上下文理解，使得系统能够更准确地响应用户需求并支持复杂的查询。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;node&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;TextNode&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;text&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;content&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;id_&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;node_id&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;   
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;n&#34;&gt;metadata&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;s2&#34;&gt;&amp;#34;law_name&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;law_name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;s2&#34;&gt;&amp;#34;article&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;article&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;s2&#34;&gt;&amp;#34;full_title&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;full_title&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;s2&#34;&gt;&amp;#34;source_file&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;source_file&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;s2&#34;&gt;&amp;#34;content_type&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;legal_article&amp;#34;&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;选择embedding模型&#34;&gt;选择embedding模型：
+&lt;/h3&gt;&lt;p&gt;完成文本分块后，我们要对这些文本进行向量化，这就需要Embedding Model，它是将文本转换为向量的工具，相似的文本将被映射到向量空间中的相近位置，使得大模型查询时能够准确地找到相关内容。所以说，如果Embedding模型的理解能力更强，则最后的模型回答效果会更好。当然也会带来更高的算力要求，所以我认为Embedding的选择逻辑如下：&lt;/p&gt;
+&lt;p&gt;如果任务需要深入的语义理解，且涉及到长文本的相似度比较，应该选择一些参数量大一些的模型，这些模型往往理解能力更强一些。如果是短文本或对速度要求较高的场景，可以选择一些等轻量级模型。&lt;/p&gt;
+&lt;p&gt;具体模型可以点击下面两个网址进行查看，由于作者本人也仅仅尝试过2-3个模型，无法给出很权威的推荐，可以在以下网址的过滤中选择&amp;quot;下载最多&amp;quot;，然后根据模型的参数量进行选择。
+&lt;a class=&#34;link&#34; href=&#34;https://huggingface.co/models?sort=downloads&amp;amp;search=embedding&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Models - Hugging Face&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://www.modelscope.cn/models?name=embedding&amp;amp;page=2&amp;amp;sort=downloads&amp;amp;tabKey=task&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;模型库首页 · 魔搭社区 (modelscope.cn)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;在本项目中我选择了&lt;strong&gt;GTE文本向量-多语言-base&lt;/strong&gt;模型进行向量化，这是一款通义实验室发布的embedding模型，其对于中文的处理效果非常好，且参数量不会很大，对算力的要求不高。 其在多语言检索任务和多任务表示模型评估中，相比同规模模型，达到了最先进的（SOTA）结果。并且采用Encoder-Only架构进行训练，使模型体积更小(300M)。LLM架构的向量模型(例如，gte-qwen2-7b-instruct)不同，该模型在推理时对硬件的要求更低，推理速度提高了10倍。也支持长上下文：支持最多8192个token的文本长度。
+模型链接如下：
+&lt;a class=&#34;link&#34; href=&#34;https://www.modelscope.cn/models/iic/gte_sentence-embedding_multilingual-base&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;GTE文本向量-多语言-base · 模型库 (modelscope.cn)&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;构建rag&#34;&gt;构建RAG
+&lt;/h2&gt;&lt;p&gt;那么在完成上述的工作后，便可以开始构建完整的RAG模型。下面的内容讲按照代码构建的顺序对各个部分进行讲解。&lt;/p&gt;
+&lt;p&gt;在本次项目中，LLM 选用了 DeepSeek-R1-Distill-Qwen-1.5B，。作为蒸馏后的版本，&lt;strong&gt;Qwen-1.5B&lt;/strong&gt;在保留了R1大模型的大部分性能的同时，大幅减少了参数量，显著提升了计算效率。其蒸馏过程有效地压缩了模型大小，且在任务执行时能达到相对较低的延迟，非常适合在资源受限的环境下进行大规模部署。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;首先，我们需要初始化&lt;strong&gt;Embedding Model&lt;/strong&gt;和&lt;strong&gt;LLM&lt;/strong&gt;。这里我们使用了&lt;code&gt;HuggingFaceEmbedding&lt;/code&gt;来加载文本嵌入模型，以及&lt;code&gt;HuggingFaceLLM&lt;/code&gt;来加载大语言模型。这些封装的函数都是llama_index库中的，可以在这个文档里面查找相关用法&lt;a class=&#34;link&#34; href=&#34;https://docs.llamaindex.ai/en/stable/examples/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Examples - LlamaIndex&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;加载数据，创建文本节点，初始化向量数据库，这些在前文中已经讲述，此处不再复述。但此处需要强调，需要加入一个对向量数据库对应路径的检测，如果已经有相关文件&lt;/li&gt;
+&lt;li&gt;在向量数据库中存储数据后，我们需要构建一个查询引擎，通过对用户的查询进行向量化，找到与查询相关的最相似条文。我们使用&lt;code&gt;VectorStoreIndex&lt;/code&gt;的&lt;code&gt;as_query_engine&lt;/code&gt;方法（由llama_index核心库提供）来创建查询引擎，并设置查询返回的结果数量（&lt;code&gt;TOP_K&lt;/code&gt;）。&lt;/li&gt;
+&lt;li&gt;最后将检索的结果放入 prompt 模板，生成最后的答案。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;以上便是大致代码构建流程，看完可能会有一点疑惑，应该是我忘了解释检索相关的内容。&lt;/p&gt;
+&lt;p&gt;在 RAG 查询过程中，有多种&lt;strong&gt;查询逻辑&lt;/strong&gt;可供选择，主要取决于如何从数据库中检索相关文本，以及如何将检索到的文本与用户输入结合，生成最终答案。具体可以分为 1. 基于向量的语义检索 2. 关键词检索，以及融合检索，基于问题的重写与扩展，递归检索等等。一方面作者对其中某些检索方式还不够熟悉，另一方面如果展开介绍的话又能写一篇新的博客了哈哈。所以此处先知道有这些检索方式即可。&lt;/p&gt;
+&lt;p&gt;而 top_k参数，则规定系统会返回与查询最相关的 &lt;code&gt;k&lt;/code&gt; 个文本块。或文本块会按相似度排序，返回最相关的 &lt;code&gt;top_k&lt;/code&gt; 个结果。例如，如果 &lt;code&gt;top_k=3&lt;/code&gt;，系统会返回与查询最相关的 3 个文档。&lt;/p&gt;
+&lt;p&gt;在本项目中，先是用基于向量的语义检索进行尝试，设置top_k=3进行尝试。并且为了让RAG 系统的“可解释性”和“引用溯源能力”可视化，还把每一条模型查询的参考依据打印出来，附带相似度得分。&lt;/p&gt;
+&lt;p&gt;为了美观和方便，我还使用&lt;strong&gt;gradio&lt;/strong&gt;做出了可视化的界面，界面中显示模型回答以及模型参考的法律条目&lt;/p&gt;
+&lt;p&gt;接下来便可以进行初步实验，下面将结合实际测试示例，探讨系统在检索与生成两个环节中的表现：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://1Shuangjiang1.github.io/p/%E5%9F%BA%E4%BA%8Ellamaindex%E7%9A%84%E5%8A%B3%E5%8A%A8%E6%B3%95rag%E9%97%AE%E7%AD%94%E7%B3%BB%E7%BB%9F/6.png&#34;
+	width=&#34;1918&#34;
+	height=&#34;878&#34;
+	srcset=&#34;https://1Shuangjiang1.github.io/p/%E5%9F%BA%E4%BA%8Ellamaindex%E7%9A%84%E5%8A%B3%E5%8A%A8%E6%B3%95rag%E9%97%AE%E7%AD%94%E7%B3%BB%E7%BB%9F/6_hu_8290d521a31f4b6c.png 480w, https://1Shuangjiang1.github.io/p/%E5%9F%BA%E4%BA%8Ellamaindex%E7%9A%84%E5%8A%B3%E5%8A%A8%E6%B3%95rag%E9%97%AE%E7%AD%94%E7%B3%BB%E7%BB%9F/6_hu_538be0bd032b4cc7.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;工资问题&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;218&#34;
+		data-flex-basis=&#34;524px&#34;
+	
+&gt;
+&lt;img src=&#34;https://1Shuangjiang1.github.io/p/%E5%9F%BA%E4%BA%8Ellamaindex%E7%9A%84%E5%8A%B3%E5%8A%A8%E6%B3%95rag%E9%97%AE%E7%AD%94%E7%B3%BB%E7%BB%9F/5.png&#34;
+	width=&#34;1867&#34;
+	height=&#34;1093&#34;
+	srcset=&#34;https://1Shuangjiang1.github.io/p/%E5%9F%BA%E4%BA%8Ellamaindex%E7%9A%84%E5%8A%B3%E5%8A%A8%E6%B3%95rag%E9%97%AE%E7%AD%94%E7%B3%BB%E7%BB%9F/5_hu_e7efa673932efd44.png 480w, https://1Shuangjiang1.github.io/p/%E5%9F%BA%E4%BA%8Ellamaindex%E7%9A%84%E5%8A%B3%E5%8A%A8%E6%B3%95rag%E9%97%AE%E7%AD%94%E7%B3%BB%E7%BB%9F/5_hu_8fd306bfa91fd066.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;试用期问题&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;170&#34;
+		data-flex-basis=&#34;409px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;测试结果以及分析&#34;&gt;测试结果以及分析
+&lt;/h2&gt;&lt;h3 id=&#34;-检索阶段表现较好&#34;&gt;🗨️ 检索阶段：表现较好
+&lt;/h3&gt;&lt;p&gt;从测试结果来看，系统在检索阶段的表现可圈可点。通过向量数据库的相似度匹配，模型可以准确找到与用户问题密切相关的法律条文。测试图片中的几个实例也印证了这一点：当提出诸如『劳动合同什么时候生效？』、『试用期最长不能超过多久？』这类明确、具体的问题时，系统每次都能迅速检索到相关性较高的法律条款。 可以看到截图中显示的检索部分都是和问题高度关联的&lt;/p&gt;
+&lt;p&gt;我认为这种良好的检索效果可以归功于在数据预处理阶段的划分（每一条法律条文单独成node），以及向量化时采用的效果较好的embedding模型。总体而言，检索阶段效果很不错。&lt;/p&gt;
+&lt;h3 id=&#34;-生成阶段表现参差不齐&#34;&gt;🗨️ 生成阶段：表现参差不齐
+&lt;/h3&gt;&lt;p&gt;然而，当来到LLM的答案生成阶段，情况就变得不太令人满意了。从测试结果可以看出：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;对于简单、答案明显的问题，例如『试用期最长不能超过多久？』，模型通常能快速且准确地生成答案，这实际上仅仅是对检索到的条文进行了简单复述，几乎没有推理难度。模型可以直接从检索的内容中获取答案。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;但是，对于检索的内容中逻辑较为复杂的情况，比如『用人单位什么时候可以解除劳动合同』这种隐含着推导需求的问题，模型的表现就不尽如人意。它往往只是机械地罗列或复述检索到的多个条文，甚至容易被不同文本的细节混淆，难以给出真正明确和有逻辑的回答。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;比如可以看到在下面的图片中，我询问的问题是『用人单位在什么情况下可以解除劳动合同』，而模型的回复却是劳动者解除合同的情况，仔细一看检索材料发现，有一个法律条文的情况描述为『用人单位有以下情形之一的，劳动者可以解除劳动合同』，我怀疑LLM生成就是在这条上面检索条文上面混淆了。导致没用生成正确的答案。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://1Shuangjiang1.github.io/p/%E5%9F%BA%E4%BA%8Ellamaindex%E7%9A%84%E5%8A%B3%E5%8A%A8%E6%B3%95rag%E9%97%AE%E7%AD%94%E7%B3%BB%E7%BB%9F/4.png&#34;
+	width=&#34;1872&#34;
+	height=&#34;947&#34;
+	srcset=&#34;https://1Shuangjiang1.github.io/p/%E5%9F%BA%E4%BA%8Ellamaindex%E7%9A%84%E5%8A%B3%E5%8A%A8%E6%B3%95rag%E9%97%AE%E7%AD%94%E7%B3%BB%E7%BB%9F/4_hu_9c97efc464001c01.png 480w, https://1Shuangjiang1.github.io/p/%E5%9F%BA%E4%BA%8Ellamaindex%E7%9A%84%E5%8A%B3%E5%8A%A8%E6%B3%95rag%E9%97%AE%E7%AD%94%E7%B3%BB%E7%BB%9F/4_hu_dac43356e016ad1e.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;用人单位相关问题&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;197&#34;
+		data-flex-basis=&#34;474px&#34;
+	
+&gt;
+并且我发现，简单问题和复杂问题之间，不仅生成答案的质量有差别，生成的速度也存在显著差异：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;简单问题：答案生成非常迅速，几乎无延迟；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;复杂问题：模型则明显『思考』更久一些，生成答案的速度明显变慢。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这种现象背后的原因，我认为在于复杂问题需要模型具备较强的『推理』和『理解』能力，而并非简单的『信息检索』。小参数量模型恰恰在这方面存在着明显的不足。&lt;/p&gt;
+&lt;h3 id=&#34;-模型参数量与生成质量的关系&#34;&gt;📉 模型参数量与生成质量的关系
+&lt;/h3&gt;&lt;p&gt;深入分析后可以推断，生成阶段表现不佳的核心原因，在于本项目选用的模型（DeepSeek-R1-Distill-Qwen-1.5B）虽然具备高效运行和低算力要求的优势，却因参数规模较小而限制了推理和逻辑组织的能力。
+较大的模型（如10B以上参数的模型）通常能更好地掌握语义信息与复杂逻辑关系，面对更高阶的推理任务能游刃有余。因此，使用参数量更大的模型，可能会使得最后的推理效果更好&lt;/p&gt;
+&lt;h2 id=&#34;-模型问题探讨&#34;&gt;📌 模型问题探讨
+&lt;/h2&gt;&lt;p&gt;在搭建和初步测试完这个法律领域的RAG系统后，我发现一个有趣的现象：虽然系统给出的引用内容大多具备一定的相关性，但最终答案的精确度并不总是让人满意，有时候甚至完全“跑偏”。搜索相关资料和实验后，我总结了一些可能的原因和对应的优化思路。&lt;/p&gt;
+&lt;h3 id=&#34;-模型回答为什么会出错&#34;&gt;🔍 模型回答为什么会出错？
+&lt;/h3&gt;&lt;p&gt;一般来说，RAG系统回答不准确的原因可以归纳为两大类：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;检索错误&lt;/strong&gt;：&lt;br&gt;
+检索阶段的文本不准确，会导致模型在错误的上下文中生成答案。就像你想问劳动合同的事，系统却检索到了“劳动争议”相关的条文告诉你合同的规定，想不答错都难。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;模型理解能力不足&lt;/strong&gt;：&lt;br&gt;
+即便检索结果正确，模型也未必能充分理解上下文信息，容易混淆和误解。尤其是本次实验中使用的模型体积较小（DeepSeek-R1-Distill-Qwen-1.5B），在复杂推理能力上存在天然缺陷，难以真正理解和组织更复杂的法律语义。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;-如何改良效果&#34;&gt;⚙️ 如何改良效果？
+&lt;/h3&gt;&lt;p&gt;针对上述问题，关于检索错误：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;我们可以首先尝试对检索结果进行&lt;strong&gt;重排序&lt;/strong&gt;,
+通过额外的重排序（Re-ranking）模型，对初始的查询结果进行二次审查，根据语义相关性进行重新排序，尝试将最合适的文本置于更高的优先级，以此提高模型生成答案时的准确性。关于重排序模型，我也将在之后的写专门的博客来讲，此处不再展开。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;我们也可以尝试使用不同的检索方法，例如融合检索，基于问题的重写与扩展，递归检索等等。可以做一些实验，去对比使用不同检索方式的效果。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果重排序和改变检索方式之后的结果仍不能让人满意，改进可能的方向还包括：&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;增大模型参数量&lt;/strong&gt;：使用更大的模型（如7B、13B、甚至更大的LLM）提升语义理解与推理能力。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;模型微调（Fine-tuning）&lt;/strong&gt;：在特定领域的数据上进一步微调模型，以增强模型对该领域语义的理解能力，从而显著提高回答精度。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;-问题超出知识库怎么办&#34;&gt;🚧 问题超出知识库怎么办？
+&lt;/h3&gt;&lt;p&gt;有时候，如果你提出一个完全与知识库无关的问题，模型依然可能自信满满地给出一个“看起来有道理”的答案。这种“胡说八道”的问题在实际使用中尤为明显，这背后是模型缺乏必要的『拒答机制』，无法判定知识库中没有相关内容，从而进行合理的拒绝回答。&lt;/p&gt;
+&lt;p&gt;因此，下一步也可以考虑对检索阈值进行动态调整，设置更严格的相似度门槛，或者增加额外的过滤机制，减少不相关内容的干扰。&lt;/p&gt;
+&lt;h3 id=&#34;-下一步的改进方向&#34;&gt;🚀 下一步的改进方向
+&lt;/h3&gt;&lt;p&gt;总结而言，当前版本的法律RAG系统更适合快速、直接的法律问答场景，尚不足以支撑涉及复杂推理的&lt;/p&gt;
+&lt;p&gt;接下来我计划在下一篇博客中深入探讨重排序模型（Reranker）的引入。&lt;/p&gt;
+&lt;p&gt;希望通过进一步的优化，能逐渐打造出一个更加聪明、更值得信赖的法律智能助手。&lt;/p&gt;
+&lt;p&gt;( ๑╹ ꇴ╹) ｸﾞｯ!&lt;/p&gt;
+&lt;h2 id=&#34;项目源码&#34;&gt;💻项目源码
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;💻 项目源码可以访问我的Github：&lt;a class=&#34;link&#34; href=&#34;https://github.com/1Shuangjiang1/labor_law_RAG&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;GitHub - abor_law_RAG&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
 </description>
         </item>
         
